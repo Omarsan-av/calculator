@@ -1,83 +1,269 @@
-const cero = document.getElementById("cero");
-const uno = document.getElementById("uno");
-const dos = document.getElementById("dos");
-const tres = document.getElementById("tres");
-const cuatro = document.getElementById("cuatro");
-const cinco = document.getElementById("cinco");
-const seis = document.getElementById("seis");
-const siete = document.getElementById("siete");
-const ocho = document.getElementById("ocho");
-const nueve = document.getElementById("nueve");
-
-let suma = document.getElementById("suma");
+let digits = [];
 let display = document.getElementById("display");
+let btnSum = document.getElementById("sum");
+let btnRest = document.getElementById("rest");
+let btnDivision = document.getElementById("division");
+let btnMultiplication = document.getElementById("multiplication");
+let btnTotal = document.getElementById("total");
+let reset = document.getElementById("reset");
+let del = document.getElementById("del");
+let point = document.getElementById("point");
+let value;
+let firstValue = undefined;
+let results;
+let keyOperation;
+let searchOperationKey;
+let secondValue;
+let valueString;
 
-display.value = 0;
-let number;
-let newNumber;
+//Obtener ids de los digitos
 
-cero.addEventListener('click', ()=>
+for(var i = 0; i <= 9; i++)
 {
-   insertarNumeros(0);
+   digits[i] = document.getElementById(`digit${i}`);
+}      
+
+digits[0].addEventListener('click', ()=> 
+{
+   insertKeys(0)
+}) 
+
+digits[1].addEventListener('click', ()=> 
+{
+   insertKeys(1)
+}) 
+
+digits[2].addEventListener('click', ()=> 
+{
+   insertKeys(2)
+}) 
+
+digits[3].addEventListener('click', ()=> 
+{
+   insertKeys(3)
+}) 
+
+digits[4].addEventListener('click', ()=> 
+{
+   insertKeys(4)
+}) 
+
+digits[5].addEventListener('click', ()=> 
+{
+   insertKeys(5)
+}) 
+
+digits[6].addEventListener('click', ()=> 
+{
+   insertKeys(6)
+}) 
+
+digits[7].addEventListener('click', ()=> 
+{
+   insertKeys(7)
+}) 
+
+digits[8].addEventListener('click', ()=> 
+{
+   insertKeys(8)
+}) 
+
+digits[9].addEventListener('click', ()=> 
+{
+   insertKeys(9)
+}) 
+
+point.addEventListener("click", ()=>
+{
+   insertKeys(".")
 })
 
-uno.addEventListener('click', ()=>
+reset.addEventListener("click", ()=> 
 {
-   insertarNumeros(1);
+   let resetValue = display.innerText = "";
+   display.value = resetValue;
 })
 
-dos.addEventListener('click', ()=>
+del.addEventListener("click", ()=> 
 {
-   insertarNumeros(2);
+   let string = display.value;
+   display.value = string.substring(0, string.length-1)
 })
 
-tres.addEventListener('click', ()=>
+btnSum.addEventListener("click", ()=> 
 {
-   insertarNumeros(3);
+   firstValue = Number(display.value);
+   insertKeys("+");
+   keyOperation = "+"
 })
 
-cuatro.addEventListener('click', ()=>
+btnRest.addEventListener("click", ()=> 
 {
-   insertarNumeros(4);
+   firstValue = Number(display.value);
+   insertKeys("-");
+   keyOperation = "-"
 })
 
-cinco.addEventListener('click', ()=>
+btnDivision.addEventListener("click", ()=> 
 {
-   insertarNumeros(5);
+   firstValue = Number(display.value);
+   insertKeys("/");
+   keyOperation = "/"
 })
 
-seis.addEventListener('click', ()=>
+btnMultiplication.addEventListener("click", ()=> 
 {
-   insertarNumeros(6);
+   firstValue = Number(display.value);
+   insertKeys("x");
+   keyOperation = "x"
 })
 
-siete.addEventListener('click', ()=>
+btnTotal.addEventListener("click", ()=>
 {
-   insertarNumeros(7);
+   searchOperationKey = display.value.indexOf(keyOperation);  
+   valueString = display.value.slice(searchOperationKey + 1);
+   
+   getNumbers(keyOperation);
+   operation(keyOperation);
+
+   keyOperation = "";
+
 })
 
-ocho.addEventListener('click', ()=>
+function operation(operation)
 {
-   insertarNumeros(8);
-})
-
-nueve.addEventListener('click', ()=>
-{
-   insertarNumeros(9);
-})
-
-function insertarNumeros(number) 
-{
-   if(display.value === 0)
+   switch(operation)
    {
-      number = display.innerText = number;
-      display.value = number;
-   }
+      case "+":
+         results = firstValue + secondValue; 
+         display.value = results;
+      break;
 
-   else
-   {
-      let crearNodo = document.createTextNode(number);
-      newNumber = display.appendChild(crearNodo);
-      display.value = parseInt(`${display.value}${number}`);
+      case "-":
+         results = firstValue - secondValue; 
+         display.value = results;
+      break;
+
+      case "/":
+         results = firstValue / secondValue; 
+         display.value = results;
+      break;
+
+      case "x":
+         results = firstValue * secondValue; 
+         display.value = results;
+      break;
    }
 }
+
+function insertKeys(n) 
+{
+   let createNodo = document.createTextNode(n);
+   value = display.appendChild(createNodo);
+   display.value = `${(display.value)}${n}`; 
+}
+
+let cadena 
+function getNumbers (operator)
+{
+   cadena = display.value;
+   console.log("Cadena: " + cadena)
+   
+   let segundoNumero = "";
+   let primerNumero = "";
+   let invertirPrimerNumero = "";
+   console.log("Tamaño de la Cadena: " + cadena.length)
+   let evaluarPosicionesAlaDerecha
+   let evaluarPosicionesAlaIzquierda
+   let operacionMatematica
+
+      operacion("x")
+      operacion("/")
+      operacion("+")
+      operacion("-")
+
+
+function operacion(operador)
+{
+   while(cadena.indexOf(operador) != -1) 
+   {
+      primerNumero = "";
+      segundoNumero = "";
+      invertirPrimerNumero = "";
+      operacionMatematica = "";
+      
+      buscarPosicionOperator = cadena.indexOf(operador);
+      console.log("En la posicion " + buscarPosicionOperator + " hay un signo " + operador)
+      
+      evaluarPosicionesAlaDerecha = buscarPosicionOperator + 1; 
+      evaluarPosicionesAlaIzquierda = buscarPosicionOperator - 1; 
+
+      // -15 x 4
+
+      while(evaluarPosicionesAlaIzquierda >= 0 && cadena.charAt(evaluarPosicionesAlaIzquierda) != "x" && cadena.charAt(evaluarPosicionesAlaIzquierda) != "/" && cadena.charAt(evaluarPosicionesAlaIzquierda) != "+" && cadena.charAt(evaluarPosicionesAlaIzquierda) != "-" )
+      {
+         primerNumero = primerNumero + cadena.charAt(evaluarPosicionesAlaIzquierda); 
+         evaluarPosicionesAlaIzquierda--;
+      }    
+      
+      while(evaluarPosicionesAlaDerecha < cadena.length && cadena.charAt(evaluarPosicionesAlaDerecha) != "x" && cadena.charAt(evaluarPosicionesAlaDerecha) != "/" && cadena.charAt(evaluarPosicionesAlaDerecha) != "+" && cadena.charAt(evaluarPosicionesAlaDerecha) != "-" )
+      {
+         segundoNumero = segundoNumero + cadena.charAt(evaluarPosicionesAlaDerecha);
+         evaluarPosicionesAlaDerecha++;
+      }    
+
+      if(primerNumero.length > 1)
+      {
+         for (let x = primerNumero.length - 1; x >= 0; x--) 
+         {
+            invertirPrimerNumero += primerNumero[x];
+         }
+      }
+
+      else 
+      {
+         invertirPrimerNumero = primerNumero;
+      }
+         
+      console.log("Primer numero: " + invertirPrimerNumero)
+      console.log("Segundo numero: " + segundoNumero)
+
+      switch(operador)
+      {
+         case "x":
+            operacionMatematica = Number(invertirPrimerNumero) * Number(segundoNumero);
+            console.log("Resultado: " + operacionMatematica);
+         break;
+
+         case "/":
+            operacionMatematica = Number(invertirPrimerNumero) / Number(segundoNumero);
+            console.log("Resultado: " + operacionMatematica);
+         break;
+
+         case "+":
+            operacionMatematica = Number(invertirPrimerNumero) + Number(segundoNumero);
+            console.log("Resultado: " + operacionMatematica)
+         break;
+
+         case "-":
+            operacionMatematica = Number(invertirPrimerNumero) - Number(segundoNumero);
+            console.log("Resultado: " + operacionMatematica)
+         break;
+      }
+
+      cadena = cadena.replace(`${invertirPrimerNumero}${operador}${segundoNumero}`, operacionMatematica)
+      console.log("NUeva cadena: " + cadena)
+         
+   }
+}
+
+      
+}
+
+
+
+
+
+
+
+

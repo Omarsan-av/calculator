@@ -9,19 +9,20 @@ let reset = document.getElementById("reset");
 let del = document.getElementById("del");
 let point = document.getElementById("point");
 let value;
-let terminarCiclo = false;
+let exitCycle = false;
 let cont = 0;
-let primerNumero;
-let segundoNumero = "";
-let invertirNumero = "";
-let evaluarPosicionesAlaDerecha;
-let evaluarPosicionesAlaIzquierda;
-let operacionMatematica;
-let cadena;
-let contador = 0;
-let contadorResta = 0;
-let terminarCicloResta = false;
-let posicionActual;
+let firstNumber = "";
+let secondNumber = "";
+let reverseNumber = "";
+let positionsRight;
+let positionsLeft;
+let searchPositionOperator;
+let calcOperation;
+let string;
+let counter = 0;
+let counterRest = 0;
+let actualPosition;
+// let exitCycleResta = false;
 
 for(let i = 0; i <= 9; i++)
 {
@@ -33,9 +34,9 @@ for(let i = 0; i <= 9; i++)
 
 point.addEventListener("click", ()=>
 {
-   let ceroAntesDelPunto = display.value;
+   let zeroBeforePoint = display.value;
 
-   if(ceroAntesDelPunto[ceroAntesDelPunto.length-1] == "+" || ceroAntesDelPunto[ceroAntesDelPunto.length-1] == "-" || ceroAntesDelPunto[ceroAntesDelPunto.length-1] == "x" || ceroAntesDelPunto[ceroAntesDelPunto.length-1] == "/" || ceroAntesDelPunto.length-1 == -1)
+   if(zeroBeforePoint[zeroBeforePoint.length-1] == "+" || zeroBeforePoint[zeroBeforePoint.length-1] == "-" || zeroBeforePoint[zeroBeforePoint.length-1] == "x" || zeroBeforePoint[zeroBeforePoint.length-1] == "/" || zeroBeforePoint.length-1 == -1)
    {
       insertKeys("0.")
    }
@@ -51,21 +52,21 @@ reset.addEventListener("click", ()=>
 {
    let resetValue = display.innerText = "";
    display.value = resetValue;
-   primerNumero = "";
-   segundoNumero = ""
-   invertirNumero = ""
-   operacionMatematica = ""
-   buscarPosicionOperator = ""
-   evaluarPosicionesAlaDerecha = ""
-   evaluarPosicionesAlaIzquierda = ""
-   contadorOperadores = 0
-   terminarCiclo = false
+   firstNumber = "";
+   secondNumber = ""
+   reverseNumber = ""
+   calcOperation = ""
+   searchPositionOperator = ""
+   positionsRight = ""
+   positionsLeft = ""
+   counterOperadores = 0
+   exitCycle = false
 })
 
 del.addEventListener("click", ()=> 
 {
-   let string = display.value;
-   display.value = string.substring(0, string.length - 1)
+   let deleteString = display.value;
+   display.value = deleteString.substring(0, deleteString.length - 1)
 })
 
 btnSum.addEventListener("click", ()=> 
@@ -90,6 +91,10 @@ btnMultiplication.addEventListener("click", ()=>
 
 btnTotal.addEventListener("click", ()=>
 {   
+   string = display.value;
+   console.log("Cadena: " + string)
+   console.log("Tamaño de la Cadena: " + string.length)
+   exitCycle = false;
    getNumbers();
 })
 
@@ -102,104 +107,99 @@ function insertKeys(n)
 
 function getNumbers ()
 {
-   cadena = display.value;
-   console.log("Cadena: " + cadena)
-   console.log("Tamaño de la Cadena: " + cadena.length)
-   
-                                                        // 0.5 + 6
-//falta pasarlo en html
-   if(cadena == "x" || cadena == "/" || cadena == "+" || cadena == "-" || cadena == ".")
-   {
-      console.log("operacion mal formada")
-   }
+   // if(string == "x" || string == "/" || string == "+" || string == "-" || string == ".")
+   // {
+   //    display.value = "Operacion malformada";
+   // }
 
-   else if(cadena.charAt(0) == "x" || cadena.charAt(0) == "/" || cadena.charAt(cadena.length -1) == "." || cadena.charAt(cadena.length -1) == "x" || cadena.charAt(cadena.length -1) == "/" || cadena.charAt(cadena.length -1) == "+" || cadena.charAt(cadena.length -1) == "-")
+   if(string.charAt(0) == "x" || string.charAt(0) == "/" || string.charAt(string.length -1) == "." || string.charAt(string.length -1) == "x" || string.charAt(string.length -1) == "/" || string.charAt(string.length -1) == "+" || string.charAt(string.length -1) == "-")
    {
-      console.log("operacion mal formada")
+      display.value = "Operacion malformada";
    }
 
    else 
    {
-      operacion("x")
-      operacion("/")
-      operacion("+")
-      operacion("-")
+      operation("x")
+      operation("/")
+      operation("+")
+      operation("-")
    }
 }      
-function operacion(operador)
+
+function operation(operator)
 {
-   while(cadena.indexOf(operador) != -1 && terminarCiclo == false) 
+   while(string.indexOf(operator) != -1 && exitCycle == false) 
    {      
-      if(cadena[0] == "+")
+      if(string[0] == "+")
       {
-         cadena = cadena.replace("+", "")
-         console.log(cadena)
+         string = string.replace("+", "")
+         console.log(string)
       }
 
-      primerNumero = "";
-      segundoNumero = "";
-      invertirNumero = "";
-      operacionMatematica = "";
+      firstNumber = "";
+      secondNumber = "";
+      reverseNumber = "";
+      calcOperation = "";
 
-      buscarPosicionOperator = cadena.indexOf(operador);
-      console.log("En la posicion " + buscarPosicionOperator + " hay un signo " + operador)
+      searchPositionOperator = string.indexOf(operator);
+      console.log("En la posicion " + searchPositionOperator + " hay un signo " + operator)
       
-      evaluarPosicionesAlaDerecha = buscarPosicionOperator + 1; 
-      evaluarPosicionesAlaIzquierda = buscarPosicionOperator - 1; 
+      positionsRight = searchPositionOperator + 1; 
+      positionsLeft = searchPositionOperator - 1; 
 
       //------------------codigo para restas con signos negativos 
       
-      contador = 0;
+      counter = 0;
 
-      for(var i = 0; i < cadena.length; i++) 
+      for(var i = 0; i < string.length; i++) 
       {
-         if (cadena[i] == "+" || cadena[i] == "x" || cadena[i] == "/") 
+         if (string[i] == "+" || string[i] == "x" || string[i] == "/") 
          {
-            contador++;
+            counter++;
          }
       }
 
-      if(contadorResta == 0 && cadena[0] == "-" && contador == 0)
+      if(counterRest == 0 && string[0] == "-" && counter == 0)
       {
-         for(var i = 0; i < cadena.length; i++) 
+         for(var i = 0; i < string.length; i++) 
          {
-            if (cadena[i] == "-" ) 
+            if (string[i] == "-" ) 
             {
-               contadorResta++;
-               console.log(contadorResta)
+               counterRest++;
             }
 
-            if(contadorResta == 1)
+            if(counterRest == 1)
             {
-               primerNumero = primerNumero + cadena[i];
+               firstNumber = firstNumber + string[i];
             }
 
-            else if(contadorResta == 2)
+            else if(counterRest == 2)
             {
-               segundoNumero = segundoNumero + cadena[i];
+               secondNumber = secondNumber + string[i];
             }
          }
 
-         if(segundoNumero == "")
+         if(secondNumber == "")
          {
-            terminarCiclo = true;
+            exitCycle = true;
          }
 
          else
          {            
-            operacionMatematica = Number(primerNumero) + Number(segundoNumero);
+            calcOperation = Number(firstNumber) + Number(secondNumber);
    
-            console.log("PRIMERO: " + primerNumero)
-            console.log("SEGUNDO: " + segundoNumero)
+            console.log("PRIMERO: " + firstNumber)
+            console.log("SEGUNDO: " + secondNumber)
          
-            cadena = cadena.replace(`${primerNumero}${segundoNumero}`, operacionMatematica)
-            console.log("Nueva cadena: " + cadena) 
-
-            contadorResta = 0
-            primerNumero = "";
-            segundoNumero = "";
-            operacionMatematica = ""; 
+            string = string.replace(`${firstNumber}${secondNumber}`, calcOperation)
+            console.log("Nueva string: " + string) 
+            display.value = string;
          }
+
+         counterRest = 0
+         firstNumber = "";
+         secondNumber = "";
+         calcOperation = ""; 
       }
 
       else 
@@ -207,22 +207,22 @@ function operacion(operador)
          //------------------------------PARA OBTENER EL PRIMER VALOR -------------------------------------
 
          cont = 0;    
-         posicionActual = "";
+         actualPosition = "";
 
-         while(evaluarPosicionesAlaIzquierda >= 0 && cadena.charAt(evaluarPosicionesAlaIzquierda) != "x" && cadena.charAt(evaluarPosicionesAlaIzquierda) != "/" && cont < 1)
+         while(positionsLeft >= 0 && string.charAt(positionsLeft) != "x" && string.charAt(positionsLeft) != "/" && cont < 1)
          {
-            if(cadena.charAt(evaluarPosicionesAlaIzquierda) == "-")
+            if(string.charAt(positionsLeft) == "-")
             {
                cont++;
 
                if(cont == 1)
                {
-                  primerNumero = primerNumero + cadena.charAt(evaluarPosicionesAlaIzquierda);
-                  evaluarPosicionesAlaIzquierda--;
+                  firstNumber = firstNumber + string.charAt(positionsLeft);
+                  positionsLeft--;
                }
             }
 
-            else if(cadena.charAt(evaluarPosicionesAlaIzquierda) == "+")
+            else if(string.charAt(positionsLeft) == "+")
             {
                cont = 2;
             }
@@ -231,9 +231,9 @@ function operacion(operador)
             {
                if(cont < 1)
                {
-                  posicionActual =evaluarPosicionesAlaIzquierda;
-                  primerNumero = primerNumero + cadena.charAt(evaluarPosicionesAlaIzquierda);
-                  evaluarPosicionesAlaIzquierda--;
+                  actualPosition =positionsLeft;
+                  firstNumber = firstNumber + string.charAt(positionsLeft);
+                  positionsLeft--;
                }
             }
          }    
@@ -242,20 +242,20 @@ function operacion(operador)
 
          cont = 0;
 
-         while(evaluarPosicionesAlaDerecha < cadena.length && cadena.charAt(evaluarPosicionesAlaDerecha) != "x" && cadena.charAt(evaluarPosicionesAlaDerecha) != "/" && cont <= 1)
+         while(positionsRight < string.length && string.charAt(positionsRight) != "x" && string.charAt(positionsRight) != "/" && cont <= 1)
          { 
-            if(cadena.charAt(evaluarPosicionesAlaDerecha) != "-" && cadena.charAt(evaluarPosicionesAlaDerecha) != "+")
+            if(string.charAt(positionsRight) != "-" && string.charAt(positionsRight) != "+")
             {
-               segundoNumero = segundoNumero + cadena.charAt(evaluarPosicionesAlaDerecha);
-               evaluarPosicionesAlaDerecha++;
+               secondNumber = secondNumber + string.charAt(positionsRight);
+               positionsRight++;
             }
 
             else 
             {
-               if(segundoNumero == "")
+               if(secondNumber == "")
                {
-                  segundoNumero = segundoNumero + cadena.charAt(evaluarPosicionesAlaDerecha);
-                  evaluarPosicionesAlaDerecha++;
+                  secondNumber = secondNumber + string.charAt(positionsRight);
+                  positionsRight++;
 
                   cont++;
                }
@@ -269,100 +269,103 @@ function operacion(operador)
       
 //------------------------------INVERTIR EL PRIMER VALOR -------------------------------------
 
-         if(primerNumero.length > 1)
+         if(firstNumber.length > 1)
          {
-            for (let x = primerNumero.length - 1; x >= 0; x--) 
+            for (let x = firstNumber.length - 1; x >= 0; x--) 
             {
-               invertirNumero += primerNumero[x];
+               reverseNumber += firstNumber[x];
             }
          }
 
          else 
          {
-            invertirNumero = primerNumero;
+            reverseNumber = firstNumber;
          }
 
-         if(invertirNumero[0] == "+")
+         if(reverseNumber[0] == "+")
          {
-            invertirNumero = invertirNumero.replace("+", "");
+            reverseNumber = reverseNumber.replace("+", "");
          }
                      
-         console.log("Primer numero: " + invertirNumero)
-         console.log("Segundo numero: " + segundoNumero)
+         console.log("Primer numero: " + reverseNumber)
+         console.log("Segundo numero: " + secondNumber)
 
-         invertirNumero = Number(invertirNumero);
-         segundoNumero = Number(segundoNumero);
+         reverseNumber = Number(reverseNumber);
+         secondNumber = Number(secondNumber);
       
-         switch(operador)
+         switch(operator)
          {
             case "x":
-               operacionMatematica = invertirNumero * segundoNumero;
-               console.log("Operacion Matematica: " + operacionMatematica);
+               calcOperation = reverseNumber * secondNumber;
+               console.log("Operacion Matematica: " + calcOperation);
             break;
 
             case "/":
-               operacionMatematica = invertirNumero / segundoNumero;
-               console.log("Operacion Matematica: " + operacionMatematica);
+               calcOperation = reverseNumber / secondNumber;
+               console.log("Operacion Matematica: " + calcOperation);
             break;
 
             case "+":
-               operacionMatematica = invertirNumero + segundoNumero;
-               console.log("Operacion Matematica: " + operacionMatematica)
+               calcOperation = reverseNumber + secondNumber;
+               console.log("Operacion Matematica: " + calcOperation)
             break;
 
             case "-":
-               operacionMatematica = invertirNumero - segundoNumero;
-               console.log("Operacion Matematica: " + operacionMatematica)
+               calcOperation = reverseNumber - secondNumber;
+               console.log("Operacion Matematica: " + calcOperation)
             break;
          }
 
-         console.log("cadena antes de sustituir operacion matematica: " + cadena) 
-         let sustituir = invertirNumero + operador + segundoNumero;
+         console.log("string antes de sustituir operacion matematica: " + string) 
+         let sustituir = reverseNumber + operator + secondNumber;
 
-         if(Math.sign(operacionMatematica) === 1 || Math.sign(operacionMatematica) === 0)
+         if(Math.sign(calcOperation) === 1 || Math.sign(calcOperation) === 0)
          {                 
             
             console.log("esto es lo que se va a sustituir por operacion matematica: " + sustituir);    
             
-            console.log("esta es lo que hay en posicion actual: " + cadena[posicionActual-1]);    
+            console.log("esta es lo que hay en posicion actual: " + string[actualPosition-1]);    
             
-            if(cadena[posicionActual -1] != "+")
+            if(string[actualPosition -1] != "+")
             {
-               cadena = cadena.replace(sustituir, "+" + operacionMatematica);
+               string = string.replace(sustituir, "+" + calcOperation);
             }
 
             else
             {
-               cadena = cadena.replace(sustituir, operacionMatematica)
+               string = string.replace(sustituir, calcOperation)
             }
             
-            if(cadena[0] == "+"  || cadena[evaluarPosicionesAlaIzquierda + 1 == "+"])
+            if(string[0] == "+"  || string[positionsLeft + 1 == "+"])
             {
-               cadena = cadena.replace("+", "")
+               string = string.replace("+", "")
             }
-            console.log("cadena despues de sustituir: " + cadena) 
+            console.log("string despues de sustituir: " + string) 
+            
+            display.value = string;
          }
          
          else 
          {
-            cadena = cadena.replace(sustituir, operacionMatematica)
-            console.log("Nueva cadena: " + cadena) 
+            string = string.replace(sustituir, calcOperation)
+            console.log("Nueva string: " + string) 
+            display.value = string;
          }
          
-         let contadorOperadores = 0;
+         let counterOperadores = 0;
 
-         for(var i = 0; i < cadena.length; i++) 
+         for(var i = 0; i < string.length; i++) 
          {
-            if (cadena[i] === "-" || cadena[i] === "+") 
+            if (string[i] === "-" || string[i] === "+") 
             {
-               contadorOperadores++;
+               counterOperadores++;
             }
          }
 
-         if(contadorOperadores == 1 && cadena[0] == "-")
+         if(counterOperadores == 1 && string[0] == "-")
          {
-            terminarCiclo = true;
-            contadorOperador = 0;
+            exitCycle = true;
+            counterOperador = 0;
          }    
       }    
    }

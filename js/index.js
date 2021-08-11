@@ -9,36 +9,19 @@ let reset = document.getElementById("reset");
 let del = document.getElementById("del");
 let point = document.getElementById("point");
 let value;
-let firstValue = undefined;
-let results;
-let keyOperation;
-let searchOperationKey;
-let secondValue;
-let valueString;
 let terminarCiclo = false;
 let cont = 0;
-
-
+let primerNumero;
 let segundoNumero = "";
 let invertirNumero = "";
-let evaluarPosicionesAlaDerecha
-let evaluarPosicionesAlaIzquierda
-let operacionMatematica
-let cadena 
-let primerNumero;
-
+let evaluarPosicionesAlaDerecha;
+let evaluarPosicionesAlaIzquierda;
+let operacionMatematica;
+let cadena;
 let contador = 0;
 let contadorResta = 0;
 let terminarCicloResta = false;
-
 let posicionActual;
-
-//Obtener ids de los digitos
-
-// digits[0].addEventListener('click', ()=> 
-// {
-//    insertKeys(0)
-// }) 
 
 for(let i = 0; i <= 9; i++)
 {
@@ -87,36 +70,27 @@ del.addEventListener("click", ()=>
 
 btnSum.addEventListener("click", ()=> 
 {
-   // firstValue = Number(display.value);
    insertKeys("+");
-   // keyOperation = "+";
 })
 
 btnRest.addEventListener("click", ()=> 
 {
-   firstValue = Number(display.value);
    insertKeys("-");
-   // keyOperation = "-";
 })
 
 btnDivision.addEventListener("click", ()=> 
 {
-   // firstValue = Number(display.value);
    insertKeys("/");
-   // keyOperation = "/";
 })
 
 btnMultiplication.addEventListener("click", ()=> 
 {
-   // firstValue = Number(display.value);
    insertKeys("x");
-   // keyOperation = "x";
 })
 
 btnTotal.addEventListener("click", ()=>
 {   
-   getNumbers(keyOperation);
-   keyOperation = "";
+   getNumbers();
 })
 
 function insertKeys(n) 
@@ -126,7 +100,7 @@ function insertKeys(n)
    display.value = `${(display.value)}${n}`; 
 }
 
-function getNumbers (operator)
+function getNumbers ()
 {
    cadena = display.value;
    console.log("Cadena: " + cadena)
@@ -173,7 +147,7 @@ function operacion(operador)
       evaluarPosicionesAlaDerecha = buscarPosicionOperator + 1; 
       evaluarPosicionesAlaIzquierda = buscarPosicionOperator - 1; 
 
-      //codigo para restas con signos negativos 
+      //------------------codigo para restas con signos negativos 
       
       contador = 0;
 
@@ -228,13 +202,13 @@ function operacion(operador)
          }
       }
 
-      
       else 
       {
          //------------------------------PARA OBTENER EL PRIMER VALOR -------------------------------------
 
          cont = 0;    
          posicionActual = "";
+
          while(evaluarPosicionesAlaIzquierda >= 0 && cadena.charAt(evaluarPosicionesAlaIzquierda) != "x" && cadena.charAt(evaluarPosicionesAlaIzquierda) != "/" && cont < 1)
          {
             if(cadena.charAt(evaluarPosicionesAlaIzquierda) == "-")
@@ -343,10 +317,10 @@ function operacion(operador)
          }
 
          console.log("cadena antes de sustituir operacion matematica: " + cadena) 
+         let sustituir = invertirNumero + operador + segundoNumero;
 
          if(Math.sign(operacionMatematica) === 1 || Math.sign(operacionMatematica) === 0)
          {                 
-            let sustituir = invertirNumero + operador + segundoNumero;
             
             console.log("esto es lo que se va a sustituir por operacion matematica: " + sustituir);    
             
@@ -359,10 +333,10 @@ function operacion(operador)
 
             else
             {
-               cadena = cadena.replace(`${invertirNumero}${operador}${segundoNumero}`, operacionMatematica)
+               cadena = cadena.replace(sustituir, operacionMatematica)
             }
             
-            if(cadena[0] == "+" || cadena[invertirNumero -1] == "+" || cadena[evaluarPosicionesAlaIzquierda + 1 == "+"])
+            if(cadena[0] == "+"  || cadena[evaluarPosicionesAlaIzquierda + 1 == "+"])
             {
                cadena = cadena.replace("+", "")
             }
@@ -371,7 +345,7 @@ function operacion(operador)
          
          else 
          {
-            cadena = cadena.replace(`${invertirNumero}${operador}${segundoNumero}`, operacionMatematica)
+            cadena = cadena.replace(sustituir, operacionMatematica)
             console.log("Nueva cadena: " + cadena) 
          }
          
@@ -393,13 +367,3 @@ function operacion(operador)
       }    
    }
 }
-
-
-
-
-
-
-
-
-
-

@@ -11,6 +11,8 @@ html
 
 body 
 {
+   font-family: 'Spartan', sans-serif;
+   background-color: #3a4764;
    font-size: 40rem;
    width: 100%;
    height: 100vh;
@@ -39,20 +41,22 @@ header
 
 .results input
 {
+   font-family: 'Spartan', sans-serif;
+   background-color: #182034;
+   color: white;
    padding: 0 20px;
    width: 100%;
    height: 100px;
-   border: 2px solid black;
    border-radius: 10px;
    text-align: end;
    box-sizing: border-box;
-   font-size: 40rem;
+   font-size: 45rem;
    outline: none;
 }
 
 ::placeholder 
 {
-   color: black;
+   color: white;
 }
 
 /* .calculator 
@@ -70,11 +74,11 @@ header
 
 .calculator 
 {
+   background-color: #232c43;
    display: grid;
    grid-template: repeat(5, 64px) / repeat(4, 1fr);
    gap: 15px;
    padding: 25px;
-   border: 2px solid black;
    border-radius: 10px;
    margin: 30px auto;
 }
@@ -84,6 +88,17 @@ header
    grid-column: 1 / 3;
 }
 
+.key.btn
+{
+   background-color: #637097;
+   color: white;
+}
+
+.key.btn.total
+{
+   background-color: #d03f2f;
+}
+
 .total
 {
    grid-column: 3 / 5;
@@ -91,8 +106,10 @@ header
 
 .key  
 {
-   border: 2px solid black;
-   border-radius: 5px;
+   font-size: 33rem;
+   background-color: #eae3dc;
+   color: #444b5a;
+   border-radius: 10px;
    display: grid;
    place-content: center;
 } 

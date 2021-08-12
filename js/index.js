@@ -22,7 +22,6 @@ let string;
 let counter = 0;
 let counterRest = 0;
 let actualPosition;
-// let exitCycleResta = false;
 
 for(let i = 0; i <= 9; i++)
 {

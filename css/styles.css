@@ -88,7 +88,7 @@ header
    border-radius: 10px;
    display: grid;
    place-content: center;
-   border-bottom: 5px solid #b4a597;
+   border-bottom: 4px solid #b4a597;
    padding-top: 8px;
 } 
 
@@ -101,11 +101,11 @@ header
 {
    background-color: #637097;
    color: white;
-   border-bottom: 5px solid #404e72;
+   border-bottom: 4px solid #404e72;
 }
 
 .key.btn.total
 {
    background-color: #d03f2f;
-   border-bottom: 5px solid #93261a;
+   border-bottom: 4px solid #93261a;
 }

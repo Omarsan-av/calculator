@@ -91,8 +91,6 @@ btnMultiplication.addEventListener("click", ()=>
 btnTotal.addEventListener("click", ()=>
 {   
    string = display.value;
-   console.log("Cadena: " + string)
-   console.log("Tamaño de la Cadena: " + string.length)
    exitCycle = false;
    getNumbers();
 })
@@ -106,11 +104,6 @@ function insertKeys(n)
 
 function getNumbers ()
 {
-   // if(string == "x" || string == "/" || string == "+" || string == "-" || string == ".")
-   // {
-   //    display.value = "Operacion malformada";
-   // }
-
    if(string.charAt(0) == "x" || string.charAt(0) == "/" || string.charAt(string.length -1) == "." || string.charAt(string.length -1) == "x" || string.charAt(string.length -1) == "/" || string.charAt(string.length -1) == "+" || string.charAt(string.length -1) == "-")
    {
       display.value = "Operacion malformada";
@@ -132,17 +125,13 @@ function operation(operator)
       if(string[0] == "+")
       {
          string = string.replace("+", "")
-         console.log(string)
       }
 
       firstNumber = "";
       secondNumber = "";
       reverseNumber = "";
       calcOperation = "";
-
       searchPositionOperator = string.indexOf(operator);
-      console.log("En la posicion " + searchPositionOperator + " hay un signo " + operator)
-      
       positionsRight = searchPositionOperator + 1; 
       positionsLeft = searchPositionOperator - 1; 
 
@@ -185,13 +174,8 @@ function operation(operator)
 
          else
          {            
-            calcOperation = Number(firstNumber) + Number(secondNumber);
-   
-            console.log("PRIMERO: " + firstNumber)
-            console.log("SEGUNDO: " + secondNumber)
-         
+            calcOperation = Number(firstNumber) + Number(secondNumber);         
             string = string.replace(`${firstNumber}${secondNumber}`, calcOperation)
-            console.log("Nueva string: " + string) 
             display.value = string;
          }
 
@@ -285,9 +269,6 @@ function operation(operator)
          {
             reverseNumber = reverseNumber.replace("+", "");
          }
-                     
-         console.log("Primer numero: " + reverseNumber)
-         console.log("Segundo numero: " + secondNumber)
 
          reverseNumber = Number(reverseNumber);
          secondNumber = Number(secondNumber);
@@ -296,35 +277,25 @@ function operation(operator)
          {
             case "x":
                calcOperation = reverseNumber * secondNumber;
-               console.log("Operacion Matematica: " + calcOperation);
             break;
 
             case "/":
                calcOperation = reverseNumber / secondNumber;
-               console.log("Operacion Matematica: " + calcOperation);
             break;
 
             case "+":
                calcOperation = reverseNumber + secondNumber;
-               console.log("Operacion Matematica: " + calcOperation)
             break;
 
             case "-":
                calcOperation = reverseNumber - secondNumber;
-               console.log("Operacion Matematica: " + calcOperation)
             break;
          }
 
-         console.log("string antes de sustituir operacion matematica: " + string) 
          let sustituir = reverseNumber + operator + secondNumber;
 
          if(Math.sign(calcOperation) === 1 || Math.sign(calcOperation) === 0)
-         {                 
-            
-            console.log("esto es lo que se va a sustituir por operacion matematica: " + sustituir);    
-            
-            console.log("esta es lo que hay en posicion actual: " + string[actualPosition-1]);    
-            
+         {                             
             if(string[actualPosition -1] != "+")
             {
                string = string.replace(sustituir, "+" + calcOperation);
@@ -339,7 +310,6 @@ function operation(operator)
             {
                string = string.replace("+", "")
             }
-            console.log("string despues de sustituir: " + string) 
             
             display.value = string;
          }
@@ -347,7 +317,6 @@ function operation(operator)
          else 
          {
             string = string.replace(sustituir, calcOperation)
-            console.log("Nueva string: " + string) 
             display.value = string;
          }
          

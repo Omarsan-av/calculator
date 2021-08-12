@@ -353,6 +353,7 @@ function operation(operator)
          }
          
          let counterOperadores = 0;
+         let counterPoints = 0;
 
          for(var i = 0; i < string.length; i++) 
          {
@@ -360,13 +361,25 @@ function operation(operator)
             {
                counterOperadores++;
             }
+
+            if (string[i] === ".")
+            {
+               counterPoints++;
+            }
          }
 
          if(counterOperadores == 1 && string[0] == "-")
          {
             exitCycle = true;
             counterOperador = 0;
-         }    
+         }   
+         
+         if (counterPoints == 1)
+         {
+            string = Number(string);
+            string = string.toFixed(3)
+            display.value = String(string)
+         }
       }    
    }
 }

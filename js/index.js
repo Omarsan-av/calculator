@@ -24,6 +24,7 @@ let counterRest = 0;
 let actualPosition;
 let counterPoints = 0;
 let reverseNumberCopy;
+let firstNumberCopy;
 let secondNumberCopy;
 
 for(let i = 0; i <= 9; i++)
@@ -158,9 +159,11 @@ function operation(operator)
 
       if(counterRest == 0 && string[0] == "-" && counter == 0)
       {
+         let op ="";
+
          for(var i = 0; i < string.length; i++) 
          {
-            if (string[i] == "-" ) 
+            if (string[i] == "-") 
             {
                counterRest++;
             }
@@ -174,6 +177,13 @@ function operation(operator)
             {
                secondNumber = secondNumber + string[i];
             }
+
+            else if(counterRest == 3)
+            {
+               secondNumber = "";
+               counterRest = 2;
+               op = "--"
+            }
          }
 
          if(secondNumber == "")
@@ -183,31 +193,15 @@ function operation(operator)
 
          else
          {        
-            if(firstNumber.length > 1)
-            {
-               for (let x = firstNumber.length - 1; x >= 0; x--) 
-               {
-                  reverseNumber += firstNumber[x];
-               }
-            }
-
-            else 
-            {
-               reverseNumber = firstNumber;
-            }
-
-            reverseNumberCopy = reverseNumber;
+            firstNumberCopy = firstNumber;
             secondNumberCopy = secondNumber; 
 
-            reverseNumber = Number(reverseNumber);
-            secondNumber = Number(secondNumber);
-
-            calcOperation = Number(reverseNumber) + Number(secondNumber);
+            calcOperation = Number(firstNumber) + Number(secondNumber);
    
-            console.log("PRIMERO: " + reverseNumber)
+            console.log("PRIMERO: " + firstNumber)
             console.log("SEGUNDO: " + secondNumber)
          
-            string = string.replace(`${reverseNumberCopy}${secondNumberCopy}`, calcOperation)
+            string = string.replace(`${firstNumberCopy}${op}${secondNumberCopy}`, calcOperation)
             console.log("Nueva string: " + string) 
             display.value = string;
          }
@@ -216,8 +210,7 @@ function operation(operator)
          firstNumber = "";
          secondNumber = "";
          calcOperation = ""; 
-         reverseNumber = "";
-         reverseNumberCopy = "";
+         firstNumberCopy = "";
          secondNumberCopy = "";
 
       }
@@ -229,7 +222,7 @@ function operation(operator)
          cont = 0;    
          actualPosition = "";
 
-         while(positionsLeft >= 0 && string.charAt(positionsLeft) != "x" && string.charAt(positionsLeft) != "/" && cont < 1)
+         while(positionsLeft >= 0 && string[positionsLeft] != "x" && string[positionsLeft] != "/" && cont < 1)
          {
             if(string.charAt(positionsLeft) == "-")
             {
@@ -257,7 +250,7 @@ function operation(operator)
                }
             }
          }    
-         
+
          //------------------------------PARA OBTENER EL SEGUNDO VALOR -------------------------------------
 
          cont = 0;
@@ -285,9 +278,13 @@ function operation(operator)
                   cont=2;
                }
             }
-         }    
-      
+         }          
 //------------------------------INVERTIR EL PRIMER VALOR -------------------------------------
+         if(firstNumber === "" || secondNumber === "" || secondNumber === "+" || secondNumber === "-")
+         {
+            string = "Operacion malformada";
+            exitCycle = true
+         }
 
          if(firstNumber.length > 1)
          {

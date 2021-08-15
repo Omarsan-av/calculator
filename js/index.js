@@ -23,6 +23,8 @@ let counter = 0;
 let counterRest = 0;
 let actualPosition;
 let counterPoints = 0;
+let reverseNumberCopy;
+let secondNumberCopy;
 
 for(let i = 0; i <= 9; i++)
 {
@@ -194,20 +196,18 @@ function operation(operator)
                reverseNumber = firstNumber;
             }
 
+            reverseNumberCopy = reverseNumber;
+            secondNumberCopy = secondNumber; 
+
             reverseNumber = Number(reverseNumber);
             secondNumber = Number(secondNumber);
-
-            //--------SI SON NUMEROS DECIMALES SE LES AGREGA 2 DECIMALES
-
-
-            //--------------------------------------------
 
             calcOperation = Number(reverseNumber) + Number(secondNumber);
    
             console.log("PRIMERO: " + reverseNumber)
             console.log("SEGUNDO: " + secondNumber)
          
-            string = string.replace(`${reverseNumber}${secondNumber}`, calcOperation)
+            string = string.replace(`${reverseNumberCopy}${secondNumberCopy}`, calcOperation)
             console.log("Nueva string: " + string) 
             display.value = string;
          }
@@ -217,6 +217,9 @@ function operation(operator)
          secondNumber = "";
          calcOperation = ""; 
          reverseNumber = "";
+         reverseNumberCopy = "";
+         secondNumberCopy = "";
+
       }
 
       else 
@@ -307,6 +310,9 @@ function operation(operator)
          console.log("Primer numero: " + reverseNumber)
          console.log("Segundo numero: " + secondNumber)
 
+         reverseNumberCopy = reverseNumber; 
+         secondNumberCopy = secondNumber;
+
          reverseNumber = Number(reverseNumber);
          secondNumber = Number(secondNumber);
       
@@ -334,7 +340,7 @@ function operation(operator)
          }
 
          console.log("string antes de sustituir operacion matematica: " + string) 
-         let sustituir = reverseNumber + operator + secondNumber;
+         let sustituir = reverseNumberCopy + operator + secondNumberCopy;
 
          if(Math.sign(calcOperation) === 1 || Math.sign(calcOperation) === 0)
          {                 
